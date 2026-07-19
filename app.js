@@ -174,7 +174,8 @@ async function loadQuestions() {
 
   // Если нет в localStorage, пробуем загрузить из tests.json
   try {
-    const response = await fetch('tests.json');
+    // Добавляем параметр cache-buster (?_t=...), чтобы изменения в tests.json на GitHub Pages применялись мгновенно
+    const response = await fetch('tests.json?_t=' + Date.now());
     if (response.ok) {
       state.allQuestions = await response.json();
       console.log('Тесты успешно загружены из tests.json');
