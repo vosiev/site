@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Персональный тренажёр тестов — изучайте теорию, сдавайте экзамены и работайте над ошибками">
+    <meta name="theme-color" content="#6366f1">
+    
+    <title>Тренажёр Тестов — Персональное Обучение</title>
+    
+    <!-- Preconnect для производительности -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe',
+                            300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1',
+                            600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'scale-in': 'scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'bounce-in': 'bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased min-h-screen transition-colors duration-300">
+    
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-[9999] flex flex-col gap-2 max-w-sm w-full pointer-events-none" aria-live="polite" aria-atomic="true"></div>
+    
+    <!-- App Shell -->
+    <div class="flex min-h-screen">
+        
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-r border-slate-200/60 dark:border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out flex flex-col" role="navigation" aria-label="Основная навигация">
+            
+            <!-- Logo -->
+            <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-lg shadow-primary-500/25">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-slate-900 dark:text-white leading-tight">Тренажёр</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Персональное обучение</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Links -->
+            <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+                <button class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" data-tab="textbook" aria-current="false">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    <span>Учебник</span>
+                </button>
+                
+                <button class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" data-tab="exam" aria-current="false">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>Экзамен</span>
+                </button>
+                
+                <button class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" data-tab="errors" aria-current="false">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                    <span>Работа над ошибками</span>
+                    <span id="errors-badge" class="ml-auto hidden items-center justify-center w-5 h-5 text-[10px] font-bold rounded-full bg-rose-500 text-white">0</span>
+                </button>
+                
+                <button class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" data-tab="stats" aria-current="false">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <span>Статистика</span>
+                </button>
+                
+                <button class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" data-tab="database" aria-current="false">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+                    <span>База тестов и ИИ</span>
+                </button>
+            </nav>
+            
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-slate-100 dark:border-slate-800">
+                <button id="theme-toggle" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200" aria-label="Переключить тему">
+                    <svg id="theme-icon-light" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                    <svg id="theme-icon-dark" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <span id="theme-label">Тёмная тема</span>
+                </button>
+                
+                <div class="mt-3 px-4 py-3 rounded-xl bg-gradient-to-br from-primary-50 to-purple-50 dark:from-primary-950/50 dark:to-purple-950/50 border border-primary-100 dark:border-primary-900/50">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-slate-500 dark:text-slate-400">Вопросов в базе</span>
+                        <span id="sidebar-question-count" class="font-bold text-primary-600 dark:text-primary-400">0</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs mt-1.5">
+                        <span class="text-slate-500 dark:text-slate-400">Ошибок</span>
+                        <span id="sidebar-error-count" class="font-bold text-rose-500">0</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Mobile Overlay -->
+        <div id="mobile-overlay" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden hidden transition-opacity duration-300" aria-hidden="true"></div>
+        
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-72 min-h-screen">
+            
+            <!-- Mobile Top Bar -->
+            <header class="sticky top-0 z-30 lg:hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60">
+                <div class="flex items-center justify-between px-4 py-3">
+                    <button id="mobile-menu-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Открыть меню" aria-expanded="false">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                    <h1 class="text-base font-bold">Тренажёр Тестов</h1>
+                    <button id="mobile-theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Переключить тему">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Content -->
+            <div class="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
+                
+                <!-- TAB: Textbook -->
+                <section id="tab-textbook" class="tab-content hidden" role="tabpanel" aria-label="Учебник">
+                    <div class="mb-8">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">📚 Учебник</h2>
+                        <p class="mt-2 text-slate-500 dark:text-slate-400">Изучайте все вопросы и правильные ответы</p>
+                    </div>
+                    <div class="mb-6 flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-1">
+                            <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <input id="textbook-search" type="search" placeholder="Поиск по вопросам..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all" aria-label="Поиск">
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="filter-btn active px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-500 text-white shadow-sm" data-filter="all">Все</button>
+                            <button class="filter-btn px-4 py-2.5 rounded-xl text-sm font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700" data-filter="single">Один ответ</button>
+                            <button class="filter-btn px-4 py-2.5 rounded-xl text-sm font-medium bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700" data-filter="multi">Несколько</button>
+                        </div>
+                    </div>
+                    <div id="textbook-container" class="grid grid-cols-1 lg:grid-cols-2 gap-4" role="list"></div>
+                </section>
+                
+                <!-- TAB: Exam -->
+                <section id="tab-exam" class="tab-content hidden" role="tabpanel" aria-label="Экзамен">
+                    <div id="exam-dynamic-area"></div>
+                </section>
+                
+                <!-- TAB: Errors -->
+                <section id="tab-errors" class="tab-content hidden" role="tabpanel" aria-label="Работа над ошибками">
+                    <div class="mb-8">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">❌ Работа над ошибками</h2>
+                        <p class="mt-2 text-slate-500 dark:text-slate-400">Персональный тренажёр по ошибкам</p>
+                    </div>
+                    <div id="errors-container"></div>
+                </section>
+                
+                <!-- TAB: Stats -->
+                <section id="tab-stats" class="tab-content hidden" role="tabpanel" aria-label="Статистика">
+                    <div class="mb-8">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">📊 Статистика</h2>
+                        <p class="mt-2 text-slate-500 dark:text-slate-400">История экзаменов и прогресс</p>
+                    </div>
+                    <div id="stats-container"></div>
+                </section>
+                
+                <!-- TAB: Database -->
+                <section id="tab-database" class="tab-content hidden" role="tabpanel" aria-label="База тестов">
+                    <div class="mb-8">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">⚙️ База тестов и ИИ</h2>
+                        <p class="mt-2 text-slate-500 dark:text-slate-400">Управление вопросами, импорт/экспорт</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="space-y-6">
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+                                <h3 class="text-lg font-bold mb-4">📖 Формат JSON</h3>
+                                <div class="bg-slate-900 dark:bg-slate-950 rounded-xl p-4 overflow-x-auto">
+                                    <pre class="text-xs text-slate-300"><code>[{
+  "id": 1,
+  "question": "Текст вопроса?",
+  "options": ["A", "B", "C"],
+  "correct": [1],
+  "category": "Общее",
+  "difficulty": "easy"
+}]</code></pre>
+                                </div>
+                            </div>
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-bold">🤖 Промт для ИИ</h3>
+                                    <button id="copy-ai-prompt-btn" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-primary-50 dark:bg-primary-950/50 text-primary-600 dark:text-primary-400 hover:bg-primary-100 transition-colors">Копировать</button>
+                                </div>
+                                <div id="ai-prompt-text" class="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 text-xs text-slate-600 dark:text-slate-400 leading-relaxed max-h-48 overflow-y-auto whitespace-pre-wrap">Ты — ИИ-ассистент. Преобразуй список вопросов в JSON для тренажёра.
+
+Формат: массив объектов с "id", "question", "options", "correct" (0-индексы).
+
+ПРАВИЛА:
+1. Индексы с 0!
+2. Не меняй формулировки.
+3. Ответ — ТОЛЬКО JSON.
+
+Преобразуй:</div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+                                <h3 class="text-lg font-bold mb-4">📥 Импорт</h3>
+                                <div class="space-y-4">
+                                    <label class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-primary-400 cursor-pointer transition-colors group">
+                                        <svg class="w-5 h-5 text-slate-400 group-hover:text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                        <span class="text-sm text-slate-500 group-hover:text-primary-600">Выбрать .json файл</span>
+                                        <input id="json-file-input" type="file" accept=".json" class="hidden">
+                                    </label>
+                                    <textarea id="json-text-input" rows="5" placeholder='[{"id":1,"question":"...","options":[...],"correct":[0]}]' class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm font-mono focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none resize-none"></textarea>
+                                    <button id="load-json-text-btn" class="w-full px-4 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-sm font-semibold shadow-sm transition-all active:scale-[0.98]">Загрузить из текста</button>
+                                </div>
+                            </div>
+                            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+                                <h3 class="text-lg font-bold mb-4">💾 Экспорт и сброс</h3>
+                                <div class="flex flex-col gap-3">
+                                    <button id="export-tests-btn" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold shadow-sm transition-all active:scale-[0.98]">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                        Скачать JSON
+                                    </button>
+                                    <button id="reset-tests-btn" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-slate-600 dark:text-slate-400 hover:text-rose-600 text-sm font-medium border border-slate-200 dark:border-slate-700 transition-all">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                        Сбросить к исходным
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
